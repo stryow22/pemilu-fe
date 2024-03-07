@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Button, Card, Container, Form, Modal } from "react-bootstrap";
-import NavigationBar from "./Components/Navbar";
 import { searchByNIK } from "./api";
 
 const Home = () => {
@@ -11,8 +10,15 @@ const Home = () => {
   const [userData, setUserData] = useState(null);
 
   const handleSearch = async () => {
+    // Check if the NIK input meets the required length and consists of digits only
+    if (nik.length !== 16 || isNaN(nik)) {
+      setErrorModalMessage("NIK harus terdiri dari 16 digit angka.");
+      setShowFailureModal(true);
+      return;
+    }
+  
     const result = await searchByNIK(nik);
-
+  
     if (result.success) {
       setUserData(result.data.data); // Set data pengguna jika berhasil ditemukan
       setShowSuccessModal(true);
@@ -32,7 +38,6 @@ const Home = () => {
 
   return (
     <>
-      <NavigationBar />
       <div
         style={{
           backgroundColor: "#F7F7F7",
@@ -58,9 +63,6 @@ const Home = () => {
                     value={nik}
                     onChange={(e) => setNik(e.target.value)}
                   />
-                  <Form.Text className="text-muted">
-                    We'll never share your email with anyone else.
-                  </Form.Text>
                 </Form.Group>
                 <Button
                   variant="warning"

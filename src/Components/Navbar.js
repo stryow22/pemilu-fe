@@ -8,15 +8,15 @@ import NavbarDropdown from './NavbarDropdown';
 function NavigationBar() {
     const votingTypes = [
         'PRESIDEN DAN WAKIL PRESIDEN',
-        'DEWAN PERWAKILAN RAKYAT REPUBLIK INDONESIA',
-        'DEWAN PERWAKILAN DAERAH',
-        'DEWAN PERWAKILAN RAKYAT DAERAH'
+        // 'DEWAN PERWAKILAN RAKYAT REPUBLIK INDONESIA',
+        // 'DEWAN PERWAKILAN DAERAH',
+        // 'DEWAN PERWAKILAN RAKYAT DAERAH'
     ];
 
     return (
         <Navbar collapseOnSelect expand="lg" style={{ backgroundColor: "#EB7028" }}>
             <Container>
-                {/* <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand> */}
+                <Navbar.Brand href="#home">Blockchain E-Vote</Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="mx-auto  justify-content-center gap-4">
@@ -33,8 +33,8 @@ function NavigationBar() {
                                 </Row>
                             </Container>
                         </NavDropdown>
-                        <Nav.Link href="#features">Validasi Pilihan</Nav.Link>
-                        <Nav.Link href="#features">Hasil</Nav.Link>
+                        {/* <Nav.Link href="#features">Validasi Pilihan</Nav.Link> */}
+                        {/* <Nav.Link href="#features">Hasil</Nav.Link> */}
                     </Nav>
                 </Navbar.Collapse>
             </Container>
