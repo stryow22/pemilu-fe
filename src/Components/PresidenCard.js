@@ -3,11 +3,11 @@ import { Card, Col, Row, Button } from 'react-bootstrap';
 
 const PaslonCard = ({ number, candidate1, candidate2 }) => {
   return (
-    <Card style={{ width: '18rem' }}>
+    <Card style={{ width: '25rem' }} className='h-100'>
+      <Card.Header as="h5"className="text-center">{number}</Card.Header>
       <Card.Img variant="top" src="holder.js/100px180" />
       <Card.Body>
         <Row>
-          <Card.Title className="text-center">{number}</Card.Title>
           <Col>
             <Card.Text>
               {candidate1}

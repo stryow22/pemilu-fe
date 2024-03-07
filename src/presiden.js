@@ -17,8 +17,8 @@ const Presiden = () => {
     },
     {
       number: "03",
-      candidate1: "Ir. Consectetur Adipiscing",
-      candidate2: "Ir. Consectetur Adipiscing",
+      candidate1: "Ir. Consectetur H",
+      candidate2: "Ir. Consectetur H",
     },
   ];
 
