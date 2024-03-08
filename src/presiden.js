@@ -18,7 +18,7 @@ const Presiden = () => {
             .filter(candidate => candidate.category === "Presiden")
             .map(candidate => ({
               id: candidate.id, // Ambil ID kandidat dari response API
-              // images: candidate.photo,
+              images: candidate.photo,
               number: candidate.number,
               capres: candidate.first_user.name,
               wapres: candidate.second_user.name
