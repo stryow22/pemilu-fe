@@ -2,42 +2,33 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Modal, Row } from "react-bootstrap";
 import PaslonCard from "./Components/PresidenCard";
-import { searchByID } from "./api";
+import { getCandidates, getDataUser, postVote } from "./api";
 
 const Presiden = () => {
   const [candidates, setCandidates] = useState([]);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [selectedCandidate, setSelectedCandidate] = useState(null);
-  const [hasVoted, setHasVoted] = useState(false); // Initialize with false by default
+  const [hasVoted, setHasVoted] = useState(false);
+
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const candidatesMapping = {
-          1: { images: "candidates1.png", number: "01", candidates: ["kdd480xfxc3tnky7uboenmi5", "rcsr5cuhjug310834cn3740p"] },
-          2: { images: "candidates2.png", number: "02", candidates: ["xw2taezytkvy9x6sv97q5es2", "o4nj02iyxl8malg4ugvdxaji"] }
-        };
-
-        const candidatesData = await Promise.all(
-          Object.values(candidatesMapping).map(async ({ images, number, candidates }) => {
-            const capresResponse = await searchByID(candidates[0]);
-            const wapresResponse = await searchByID(candidates[1]);
-
-            if (capresResponse.success && wapresResponse.success) {
-              return {
-                images,
-                number,
-                capres: capresResponse.data.name,
-                wapres: wapresResponse.data.name
-              };
-            } else {
-              return null;
-            }
-          })
-        );
-
-        const filteredCandidates = candidatesData.filter(candidate => candidate !== null);
-        setCandidates(filteredCandidates);
+        const response = await getCandidates();
+        if (response.success) {
+          const candidatesData = response.data
+            .filter(candidate => candidate.category === "Presiden")
+            .map(candidate => ({
+              id: candidate.id, // Ambil ID kandidat dari response API
+              images: candidate.photo,
+              number: candidate.number,
+              capres: candidate.first_user.name,
+              wapres: candidate.second_user.name
+            }));
+          setCandidates(candidatesData);
+        } else {
+          console.error('Failed to fetch candidates:', response.error);
+        }
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -45,27 +36,51 @@ const Presiden = () => {
 
     fetchData();
 
-    // Retrieve hasVoted from local storage
     const storedHasVoted = localStorage.getItem("hasVoted");
     if (storedHasVoted) {
       setHasVoted(true);
     }
   }, []);
 
-  const handleVote = (candidate) => {
-    // Check if user has already voted
+  const handleVote = async (candidate) => {
     if (hasVoted) {
       alert("You have already voted.");
       return;
     }
 
-    // Save vote temporarily in local storage
-    localStorage.setItem("hasVoted", true);
-    localStorage.setItem("selectedCandidate", JSON.stringify(candidate));
+    try {
+      // Hardcode user_id sementara
+      const user_id = "w5o79k9kb7fl6rekeoxh6aph";
 
-    setSelectedCandidate(candidate);
-    setShowSuccessModal(true);
-    setHasVoted(true); // Update hasVoted state
+      const userDataResponse = await getDataUser(user_id);
+      if (!userDataResponse.success) {
+        console.error('Failed to fetch user data:', userDataResponse.error);
+        alert("Failed to fetch user data. Please try again later.");
+        return;
+      }
+
+      const { is_voted } = userDataResponse.data;
+      if (is_voted) {
+        alert("You have already voted.");
+        return;
+      }
+
+      const voteResponse = await postVote(candidate.id, user_id); // Menggunakan ID kandidat dari response API
+      if (voteResponse.success) {
+        localStorage.setItem("hasVoted", true);
+        localStorage.setItem("selectedCandidate", JSON.stringify(candidate));
+
+        setSelectedCandidate(candidate);
+        setShowSuccessModal(true);
+        setHasVoted(true);
+      } else {
+        console.error('Failed to post vote:', voteResponse.error);
+        alert("Failed to post vote. Please try again later.");
+      }
+    } catch (error) {
+      console.error('Error handling vote:', error);
+      alert("Failed to handle vote. Please try again later.");
+    }
   };
 
   const handleCloseSuccessModal = () => {
@@ -92,14 +107,13 @@ const Presiden = () => {
                 capres={candidate.capres}
                 wapres={candidate.wapres}
                 onVote={() => handleVote(candidate)}
-                hasVoted={hasVoted} // Pass hasVoted as a prop
+                hasVoted={hasVoted}
               />
             </Col>
           ))}
         </Row>
       </Container>
 
-      {/* Success Modal */}
       <Modal show={showSuccessModal} onHide={handleCloseSuccessModal}>
         <Modal.Header closeButton>
           <Modal.Title>Success!</Modal.Title>

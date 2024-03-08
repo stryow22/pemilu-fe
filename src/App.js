@@ -4,7 +4,7 @@ import Home from './home';
 import './App.css';
 import Presiden from './presiden';
 import NavigationBar from './Components/Navbar';
-// import Verify from './verify';
+import Verify from './verify';
 
 const App = () => (
   <Router>
@@ -12,7 +12,7 @@ const App = () => (
 
     <Routes>
       <Route path="/" element={<Home />} />
-      {/* <Route path="/verify" element={<Verify />} /> */}
+      <Route path="/verify" element={<Verify />} />
       <Route path="/presiden" element={<Presiden />} />
     </Routes>
   </Router>

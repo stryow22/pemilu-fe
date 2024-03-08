@@ -14,16 +14,25 @@ function NavigationBar() {
     ];
 
     return (
-        <Navbar collapseOnSelect expand="lg" style={{ backgroundColor: "#EB7028" }}>
+        <Navbar collapseOnSelect expand="lg" style={{ backgroundColor: "#EB7028" }} className='text-white'>
             <Container>
-                <Navbar.Brand href="#home">Blockchain E-Vote</Navbar.Brand>
+                <Navbar.Brand href="#home" className="text-white">
+                    <img
+                        alt=""
+                        src="/kpu-logo.png"
+                        width="30"
+                        height="30"
+                        className="d-inline-block align-top"
+                    />{' '}
+                    Blockchain E-Voting
+                </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="mx-auto  justify-content-center gap-4">
                         <Nav.Link href="/">Check DPT</Nav.Link>
 
                         <NavDropdown title="Vote" id="collapsible-nav-dropdown" style={{ position: "initial" }}>
-                            <Container fluid >
+                            <Container fluid>
                                 <Row>
                                     {votingTypes.map((type, index) => (
                                         <Col key={index}>
@@ -33,8 +42,8 @@ function NavigationBar() {
                                 </Row>
                             </Container>
                         </NavDropdown>
-                        {/* <Nav.Link href="#features">Validasi Pilihan</Nav.Link> */}
-                        {/* <Nav.Link href="#features">Hasil</Nav.Link> */}
+                        <Nav.Link href="#">Validasi Pilihan</Nav.Link>
+                        <Nav.Link href="#">Hasil</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </Container>

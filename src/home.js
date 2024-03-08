@@ -86,6 +86,7 @@ const Home = () => {
           <p>NIK: {userData?.nik}</p>
           <p>Nama: {userData?.name}</p>
           <p>Tanggal Lahir: {userData ? formatTanggal(userData.date_of_birth) : null}</p>
+          <p>Sudah Pilih {userData?.is_voted}</p>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="primary" onClick={() => setShowSuccessModal(false)}>
