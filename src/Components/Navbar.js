@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
@@ -6,6 +7,24 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import NavbarDropdown from './NavbarDropdown';
 
 function NavigationBar() {
+    const [name, setName] = useState('');
+    const [nik, setNik] = useState('');
+    const [userIdExists, setUserIdExists] = useState(false);
+
+    useEffect(() => {
+        // Fetch data from local storage
+        const storedName = localStorage.getItem('name');
+        const storedNik = localStorage.getItem('nik');
+        const storedUserId = localStorage.getItem('user_id');
+
+        // Update state if data exists in local storage
+        if (storedName && storedNik && storedUserId) {
+            setName(storedName);
+            setNik(storedNik);
+            setUserIdExists(true);
+        }
+    }, []); // Empty dependency array ensures that effect runs only once, similar to componentDidMount
+
     const votingTypes = [
         'PRESIDEN DAN WAKIL PRESIDEN',
         // 'DEWAN PERWAKILAN RAKYAT REPUBLIK INDONESIA',
@@ -46,6 +65,15 @@ function NavigationBar() {
                         <Nav.Link href="#">Hasil</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
+                {userIdExists && (
+                    <Navbar.Collapse className="justify-content-end">
+                        <Navbar.Text>
+                            Nama: <span className='fw-bold'>{name}</span>
+                            <br/>
+                            NIK: <span className='fw-bold'>{nik}</span>
+                        </Navbar.Text>
+                    </Navbar.Collapse>
+                )}
             </Container>
         </Navbar>
     );

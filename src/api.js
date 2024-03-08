@@ -116,3 +116,26 @@ export const getUserVoteStatus = async (user_id) => {
         return { success: false, error: 'Failed to fetch vote status' };
     }
 };
+
+
+export const uploadKTP = async (photo) => {
+    try {
+      const formData = new FormData();
+      formData.append('photo', photo); // Menggunakan key "photo" untuk mengunggah foto
+  
+      const response = await fetch(`${apiUrl}/users/read`, {
+        method: 'POST',
+        body: formData,
+      });
+  
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message || 'Gagal mengunggah file KTP');
+      }
+  
+      const responseData = await response.json();
+      return responseData.data?.nik || null;
+    } catch (error) {
+      throw new Error(error.message || 'Terjadi kesalahan saat mengunggah file KTP');
+    }
+  };  

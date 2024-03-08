@@ -1,4 +1,3 @@
-// presiden.js
 import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Modal, Row } from "react-bootstrap";
 import PaslonCard from "./Components/PresidenCard";
@@ -10,7 +9,6 @@ const Presiden = () => {
   const [selectedCandidate, setSelectedCandidate] = useState(null);
   const [hasVoted, setHasVoted] = useState(false);
 
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -20,7 +18,7 @@ const Presiden = () => {
             .filter(candidate => candidate.category === "Presiden")
             .map(candidate => ({
               id: candidate.id, // Ambil ID kandidat dari response API
-              images: candidate.photo,
+              // images: candidate.photo,
               number: candidate.number,
               capres: candidate.first_user.name,
               wapres: candidate.second_user.name
@@ -49,8 +47,7 @@ const Presiden = () => {
     }
 
     try {
-      // Hardcode user_id sementara
-      const user_id = "w5o79k9kb7fl6rekeoxh6aph";
+      const user_id = localStorage.getItem("user_id"); // Mendapatkan user_id dari local storage
 
       const userDataResponse = await getDataUser(user_id);
       if (!userDataResponse.success) {
@@ -85,7 +82,9 @@ const Presiden = () => {
 
   const handleCloseSuccessModal = () => {
     setShowSuccessModal(false);
+    localStorage.clear(); // Membersihkan local storage
   };
+
 
   return (
     <div
@@ -128,7 +127,7 @@ const Presiden = () => {
           )}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseSuccessModal}>
+          <Button variant="secondary" href="/verify" onClick={handleCloseSuccessModal}>
             Close
           </Button>
         </Modal.Footer>

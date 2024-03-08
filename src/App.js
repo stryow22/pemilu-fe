@@ -1,21 +1,32 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './home';
 import './App.css';
 import Presiden from './presiden';
 import NavigationBar from './Components/Navbar';
 import Verify from './verify';
 
-const App = () => (
-  <Router>
-    <NavigationBar />
+const App = () => {
+  const user_id = localStorage.getItem('user_id'); // Periksa apakah user_id ada dalam local storage
 
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/verify" element={<Verify />} />
-      <Route path="/presiden" element={<Presiden />} />
-    </Routes>
-  </Router>
-);
+  return (
+    <Router>
+      <NavigationBar />
+
+      <Routes>
+        <Route path="/" element={<Home />} />
+
+        {/* Periksa apakah user_id ada dalam local storage */}
+        {user_id ? (
+          <Route path="/presiden" element={<Presiden />} />
+        ) : (
+          <Route path="/presiden" element={<Navigate to="/verify" />} />
+        )}
+
+        <Route path="/verify" element={<Verify />} />
+      </Routes>
+    </Router>
+  );
+};
 
 export default App;
